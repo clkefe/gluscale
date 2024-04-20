@@ -95,7 +95,7 @@ export default function NavigationBar() {
                   <div className="px-8 text-left">
                     <DrawerClose asChild>
                       <Link
-                        href="/login"
+                        href="/auth/signin"
                         className="flex justify-start w-full p-0"
                       >
                         Sign In
