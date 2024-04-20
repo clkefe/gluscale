@@ -11,7 +11,7 @@ export default function useUser() {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
-  const [authanticated, setAuthanticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   const getProfile = useCallback(async () => {
     try {
@@ -21,10 +21,10 @@ export default function useUser() {
       if (error) throw error;
       if (data) {
         setUser(data.user.user_metadata);
-        setAuthanticated(true);
+        setAuthenticated(true);
       }
     } catch (error) {
-      setAuthanticated(false);
+      setAuthenticated(false);
     }
 
     setLoading(false);
@@ -65,7 +65,7 @@ export default function useUser() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setAuthanticated(false);
+    setAuthenticated(false);
 
     router.push("/auth/signin");
   };
@@ -77,7 +77,7 @@ export default function useUser() {
   return {
     user,
     loading,
-    authanticated,
+    authenticated,
     signUpWithGoogle,
     signUpWithEmail,
     signOut,

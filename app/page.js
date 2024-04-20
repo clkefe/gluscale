@@ -1,13 +1,14 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
+import { createClient } from "../lib/supabase/client";
 
 export default function Home() {
   const router = useRouter();
-
-  const { loading, authanticated, signOut } = useUser();
+  const { user, loading, authenticated, signOut } = useUser();
 
   return (
     <main>
@@ -16,9 +17,8 @@ export default function Home() {
 
         {loading ? (
           <p>Loading..</p>
-        ) : authanticated ? (
+        ) : authenticated ? (
           <>
-            
             <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
             <Button onClick={signOut}>Sign Out</Button>
           </>
