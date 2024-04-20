@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from "react";
 import useUser from "../../hooks/useUser";
 import Image from "next/image";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import NaviationBar from "../../components/NavigationBar";
 
 export default function Dashboard() {
+  const { user, loading } = useUser();
+
   const [isShaking, setIsShaking] = useState(false);
   const [currentEggStage, setCurrentEggStage] = useState(1);
 
@@ -58,8 +62,10 @@ export default function Dashboard() {
     <div className="w-full h-screen">
       <div className="container mx-auto">
         {/* Top NavBar */}
-        <div className="w-full">
-          <p>.</p>
+        <div className="flex justify-between mt-6">
+          <div>
+            <NaviationBar />
+          </div>
         </div>
 
         {/* Egg Visualization */}
