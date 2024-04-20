@@ -4,11 +4,34 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
+
 import { createClient } from "../lib/supabase/client";
+
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { user, loading, authenticated, signOut } = useUser();
+
+  const { user, isWearableConnected, loading, authenticated, signOut } = useUser();
+
+  useEffect(() => {
+    async function linkWearable() {
+      console.log(loading, isWearableConnected);
+      if (loading) return;
+      if (isWearableConnected) return;
+
+      const { data, error } = await axios.get("/auth/link");
+
+      if (error) {
+        return console.log(error);
+      }
+
+      console.log(data);
+    }
+
+    linkWearable();
+  }, [isWearableConnected, loading]);
 
   return (
     <main>
