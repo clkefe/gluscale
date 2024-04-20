@@ -26,13 +26,22 @@ export async function GET() {
     data: data,
   };
 
-  const { error } = await axios.request(config).catch((error) => {
-    return { error: error.message };
-  });
+  const { data: response, error } = await axios
+    .request(config)
+    .catch((error) => {
+      return { error: error.message };
+    });
 
   if (error) {
     return Response.json({ error: error });
   }
+
+  const { error: error2 } = await supabase.from("wearable_connection").upsert({
+    user_id: user.data.user.id,
+    vital_uid: response.user_id,
+  });
+
+  console.log(error2);
 
   return Response.json({
     data: "Yay! Your libre is now connected to your account.",

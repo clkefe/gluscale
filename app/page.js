@@ -13,6 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     async function linkWearable() {
+      console.log(loading, isWearableConnected);
       if (loading) return;
       if (isWearableConnected) return;
 
