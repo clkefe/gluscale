@@ -37,7 +37,7 @@ const NAVIGATION = [
 ];
 
 export default function NavigationBar() {
-  const { user, authanticated, signUp, signOut } = useUser();
+  const { user, authenticated, signUp, signOut } = useUser();
   return (
     <div>
       <Drawer direction="left">
@@ -76,14 +76,14 @@ export default function NavigationBar() {
 
             {/* Sign in & Sign out buttons */}
             <div className="mt-1">
-              {authanticated ? (
+              {authenticated ? (
                 <>
                   <div className="px-8 text-left">
                     <DrawerClose asChild>
                       <Button
                         variant="link"
                         onClick={signOut}
-                        className="flex justify-start w-full p-0 text-destructive"
+                        className="flex justify-start w-full p-0 text-red-500"
                       >
                         Logout
                       </Button>
