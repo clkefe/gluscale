@@ -30,9 +30,9 @@ export default function useUser() {
     setLoading(false);
   }, [supabase]);
 
-  const signUp = async (provider) => {
+  const signUpWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider,
+      provider: "google",
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/callback`,
       },
@@ -43,6 +43,24 @@ export default function useUser() {
     }
 
     return router.push(data.url);
+  };
+
+  const signUpWithEmail = async (email, password) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const signOut = async () => {
@@ -56,5 +74,12 @@ export default function useUser() {
     getProfile();
   }, [getProfile]);
 
-  return { user, loading, authanticated, signUp, signOut };
+  return {
+    user,
+    loading,
+    authanticated,
+    signUpWithGoogle,
+    signUpWithEmail,
+    signOut,
+  };
 }
