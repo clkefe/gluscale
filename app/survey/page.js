@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@mui/material";
 
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_URL);
+
 export default function Home() {
     const [_type, setType] = useState("");
     const [_time_diagnosis, setTimeDiagnosis] = useState("");
@@ -12,6 +14,7 @@ export default function Home() {
     const [_insulin_therapy, setInsulinTherapy] = useState("");
     const [_blood_sugar_units, setBloodSugarUnits] = useState("");
     const [_target_range, setTargetRange] = useState("");
+    const [_user_id, setUserId] = useState("");
 
     async function insertAllData() {
         const { error } = await supabase
