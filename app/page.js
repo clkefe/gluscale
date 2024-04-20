@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 
-import { createClient } from "../lib/supabase/client";
-
 import axios from "axios";
-import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
 
-  const { user, isWearableConnected, loading, authenticated, signOut } = useUser();
+  const { user, isWearableConnected, loading, authenticated, signOut } =
+    useUser();
 
   useEffect(() => {
     async function linkWearable() {
