@@ -77,9 +77,9 @@ export default function Dashboard() {
         {/* Live Glucose Level */}
         <div>
           <div className="flex justify-center mt-8">
-            <div className="flex items-center shadow-xl rounded-md p-4">
+            <div className="flex items-center rounded-md p-4">
               <div className="flex flex-col items-start">
-                <div className="text-2xl text-primary">Sugar Level</div>
+                <div className="text-2xl text">Sugar Level</div>
                 <div className="flex flex-row justify-start items-end">
                   <div className="text-6xl font-semibold">
                     {loading ? <>...</> : glucoseLevel?.toFixed(2)}
@@ -95,7 +95,7 @@ export default function Dashboard() {
         </div>
 
         {/* Egg Visualization */}
-        <div className="flex justify-center bg-card border border-primary shadow-xl rounded-md items-center object-fill mt-4">
+        <div className="flex justify-center bg-card border shadow-xl rounded-md items-center object-fill mt-4">
           <div className="p-8">
             <div
               className={isShaking ? "shake-animation" : ""}
