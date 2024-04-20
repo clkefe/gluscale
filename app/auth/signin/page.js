@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "@mui/material";
 import { TextBox } from "devextreme-react/text-box";
 
 import useUser from "../../../hooks/useUser";
 
 const App = () => {
-  const { signUp, loading, authanticated } = useUser();
+  const { signUp } = useUser();
 
   return (
     <div className="bg-white p-4">

@@ -49,7 +49,7 @@ export default function useUser() {
     await supabase.auth.signOut();
     setAuthanticated(false);
 
-    router.push("/login");
+    router.push("/auth/signin");
   };
 
   useEffect(() => {
