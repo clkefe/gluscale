@@ -2,25 +2,25 @@
 
 import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Button } from "@mui/material";
+import { questions } from "../survey/question.js";
+import { useRouter } from "next/navigation";
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_URL);
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 export default function Home() {
+    const [activeQuestion, setActiveQuestion] = useState(0);
     const [_type, setType] = useState("");
     const [_time_diagnosis, setTimeDiagnosis] = useState("");
     const [_medication, setMedication] = useState("");
-    const [_purpose, setPurpose] = useState("");
-    const [_insulin_therapy, setInsulinTherapy] = useState("");
-    const [_blood_sugar_units, setBloodSugarUnits] = useState("");
-    const [_target_range, setTargetRange] = useState("");
-    const [_user_id, setUserId] = useState("");
+    const [_age, setAge] = useState("");
+    const router = useRouter();
+    const questionData = questions.questions[activeQuestion];
 
     async function insertAllData() {
         const { error } = await supabase
             .from("survey_data")
             .insert([
-                {type: _type, time_diagnosis: _time_diagnosis, medication: _medication, purpose: _purpose, insulin_therapy: _insulin_therapy, blood_sugar_units: _blood_sugar_units, target_range:  _target_range},
+                {type: _type, time_diagnosis: _time_diagnosis, medication: _medication, age: _age},
             ])
     }
 
@@ -35,17 +35,8 @@ export default function Home() {
             case "medication":
                 setMedication(newValue);
                 break;
-            case "purpose":
-                setPurpose(newValue);
-                break;
-            case "insulin_therapy":
-                setInsulinTherapy(newValue);
-                break;
-            case "blood_sugar_units":
-                setBloodSugarUnits(newValue);
-                break;
-            case "target_range":
-                setTargetRange(newValue);
+            case "age":
+                setAge(newValue);
                 break;
             default:
                 break;
@@ -53,12 +44,29 @@ export default function Home() {
     };
 
     return (
-      <main>
-        <div>
-            <Button onClick={() => handleButtonClick("type", "Type 1")}>"Type 1"</Button>
-            <Button onClick={() => insertAllData()}>Finish Survey</Button>
+        <div className="bg-[#91F5AD] min-h-screen flex-grow p-4">
+          <div className="justify-center flex flex-col items-center text-black text-7xl font-semibold m-4">
+            {questionData.question && (
+              <h1>{questionData.question}</h1>
+            )}
+            {questionData.answers.map((answer, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  handleButtonClick(questionData.field, answer)
+                  if (activeQuestion === questions.totalQuestions - 1) {
+                    insertAllData();
+                    router.push("/dashboard")
+                  } else {
+                    setActiveQuestion(activeQuestion + 1);
+                  }
+                }}
+                className="bg-[#8B9EB7] text-white p-8 m-6 rounded-lg text-5xl"
+              >
+                {answer}
+              </button>
+            ))}
+          </div>
         </div>
-      </main>
-    );
-  }
-  
+      );
+}
