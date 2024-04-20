@@ -13,7 +13,31 @@ export default function useUser() {
   const [user, setUser] = useState({});
   const [authenticated, setAuthenticated] = useState(false);
   const [isWearableConnected, setIsWearableConnected] = useState(false);
+  const [glucoseLevel, setGlucoseLevel] = useState(null);
 
+  // This timer gets the users glucose level every 5 minutes from supabase's 'glucose_level' table
+  useEffect(() => {
+    async function getGlucoseLevel() {
+      const { data, error } = await supabase
+        .from("glucose_level")
+        .select("value")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data.length > 0) {
+        setGlucoseLevel(data[0].value);
+      }
+
+      return setTimeout(getGlucoseLevel, 300000);
+    }
+
+    getGlucoseLevel();
+  }, [supabase]);
 
   const getProfile = useCallback(async () => {
     try {
@@ -92,5 +116,6 @@ export default function useUser() {
     signUpWithEmail,
     signOut,
     isWearableConnected,
+    glucoseLevel,
   };
 }

@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import useUser from "../../hooks/useUser";
 import Image from "next/image";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import NaviationBar from "../../components/NavigationBar";
 
 export default function Dashboard() {
-  const { user, loading } = useUser();
+  const { user, loading, authenticated, glucoseLevel } = useUser();
 
   const [isShaking, setIsShaking] = useState(false);
   const [currentEggStage, setCurrentEggStage] = useState(1);
@@ -58,18 +57,45 @@ export default function Dashboard() {
     return () => clearTimeout(startRandomShake);
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  } else if (!authenticated) {
+    // TODO: Redirect to login page
+    return <div>Not authenticated</div>;
+  }
+
   return (
     <div className="w-full h-screen">
       <div className="container mx-auto">
         {/* Top NavBar */}
-        <div className="flex justify-between mt-6">
+        <div className="flex justify-between pt-6">
           <div>
             <NaviationBar />
           </div>
         </div>
 
+        {/* Live Glucose Level */}
+        <div>
+          <div className="flex justify-center mt-8">
+            <div className="flex items-center shadow-xl rounded-md p-4">
+              <div className="flex flex-col items-start">
+                <div className="text-2xl text-primary">Sugar Level</div>
+                <div className="flex flex-row justify-start items-end">
+                  <div className="text-6xl font-semibold">
+                    {loading ? <>...</> : glucoseLevel?.toFixed(2)}
+                  </div>
+
+                  <div className="text-lg font-light text-muted-foreground">
+                    mg/dL
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Egg Visualization */}
-        <div className="flex justify-center bg-card shadow-xl rounded-md items-center object-fill mt-32">
+        <div className="flex justify-center bg-card border border-primary shadow-xl rounded-md items-center object-fill mt-4">
           <div className="p-8">
             <div
               className={isShaking ? "shake-animation" : ""}
