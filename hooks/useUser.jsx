@@ -12,11 +12,21 @@ export default function useUser() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
   const [authenticated, setAuthenticated] = useState(false);
+  const [isWearableConnected, setIsWearableConnected] = useState(false);
+
 
   const getProfile = useCallback(async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.getUser();
+
+      const { data: data2, error: error2 } = await supabase
+        .from("wearable_connection")
+        .select()
+        .eq("user_id", data.user.id);
+
+      const isWearableConnected = data2.length > 0;
+      setIsWearableConnected(isWearableConnected);
 
       if (error) throw error;
       if (data) {
@@ -81,5 +91,6 @@ export default function useUser() {
     signUpWithGoogle,
     signUpWithEmail,
     signOut,
+    isWearableConnected,
   };
 }
