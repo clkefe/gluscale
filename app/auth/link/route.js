@@ -43,7 +43,44 @@ export async function GET() {
 
   console.log(error2);
 
+  await checkDragonEgg(supabase, user.data.user.id);
+
   return Response.json({
     data: "Yay! Your libre is now connected to your account.",
   });
 }
+
+const checkDragonEgg = async (supabase, userId) => {
+  console.log("Starting checking dragon egg");
+
+  const filterDate = new Date();
+  filterDate.setDate(filterDate.getDate() - 1);
+  filterDate.setHours(20, 0, 0, 0);
+  const yesterdayStr = filterDate.toISOString();
+
+  const { data, error } = await supabase
+    .from("dragon_egg")
+    .select()
+    .eq("user_id", userId)
+    .gte("created_at", yesterdayStr);
+
+  console.log(data, error);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (data.length > 0) {
+    console.log("Already exist. Returning");
+    return;
+  }
+
+  const { error: error2 } = await supabase.from("dragon_egg").insert({
+    user_id: userId,
+    created_at: new Date(),
+    dragon_id: 1,
+  });
+
+  console.log(error2);
+};
