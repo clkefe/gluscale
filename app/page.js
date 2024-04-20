@@ -18,6 +18,7 @@ export default function Home() {
           <p>Loading..</p>
         ) : authanticated ? (
           <>
+            
             <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
             <Button onClick={signOut}>Sign Out</Button>
           </>
