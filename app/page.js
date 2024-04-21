@@ -1,41 +1,44 @@
-"use client";
+"use client"
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
-
-import axios from "axios";
+import { createClient } from "../lib/supabase/client";
 
 export default function Home() {
   const router = useRouter();
+  const supabase = createClient();
+  const [firstTime, setFirstTime] = useState(null);
+  const { user, loading, authenticated, signOut } = useUser();
 
-  const { user, isWearableConnected, loading, authenticated, signOut } =
-    useUser();
+  async function fetchFirstTime() {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: data1, error } = await supabase
+      .from("survey_data")
+      .select("*")
+      .eq("user_id", user.id);
+    return !!data1;
+  }
 
   useEffect(() => {
-    async function linkWearable() {
-      console.log(loading, isWearableConnected);
-      if (loading) return;
-      if (isWearableConnected) return;
-
-      const { data, error } = await axios.get("/auth/link");
-
-      if (error) {
-        return console.log(error);
-      }
-
-      console.log(data);
+    async function fetchData() {
+      const isFirstTime = await fetchFirstTime();
+      setFirstTime(isFirstTime);
     }
+    fetchData();
+  }, []);
 
-    linkWearable();
-  }, [isWearableConnected, loading]);
+  useEffect(() => {
+    if (authenticated && firstTime) {
+      router.push("/survey");  
+    }
+  }, [authenticated, firstTime]);
 
   return (
     <main>
       <div>
         <h1>Welcome to GlucoBuddy</h1>
-
         {loading ? (
           <p>Loading..</p>
         ) : authenticated ? (
