@@ -74,7 +74,7 @@ export default function useUser() {
         setAiFeedback(data3[0]?.advice);
       }
 
-      return setTimeout(getGlucoseLevel, 300000);
+      return setTimeout(getGlucoseLevel, 10000);
     }
 
     getGlucoseLevel();
