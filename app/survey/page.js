@@ -1,13 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 import { questions } from "../survey/question.js";
 import { useRouter } from "next/navigation";
+import { Button } from "../../components/ui/button.tsx";
+import Image from "next/image";
+import { createClient } from "../../lib/supabase/client.js";
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
 
 export default function Home() {
+    const supabase = createClient();
+
     const [activeQuestion, setActiveQuestion] = useState(0);
     const [_type, setType] = useState("");
     const [_time_diagnosis, setTimeDiagnosis] = useState("");
@@ -22,6 +27,8 @@ export default function Home() {
             .insert([
                 {type: _type, time_diagnosis: _time_diagnosis, medication: _medication, age: _age},
             ])
+
+            console.log(error);
     }
 
     const handleButtonClick = (field, newValue) => {
@@ -43,30 +50,47 @@ export default function Home() {
         }
     };
 
-    return (
-        <div className="bg-[#91F5AD] min-h-screen flex-grow p-4">
-          <div className="justify-center flex flex-col items-center text-black text-7xl font-semibold m-4">
-            {questionData.question && (
-              <h1>{questionData.question}</h1>
-            )}
-            {questionData.answers.map((answer, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  handleButtonClick(questionData.field, answer)
-                  if (activeQuestion === questions.totalQuestions - 1) {
-                    insertAllData();
-                    router.push("/dashboard")
-                  } else {
-                    setActiveQuestion(activeQuestion + 1);
-                  }
-                }}
-                className="bg-[#8B9EB7] text-white p-8 m-6 rounded-lg text-5xl"
-              >
-                {answer}
-              </button>
-            ))}
-          </div>
-        </div>
-      );
-}
+        return (
+            <div>
+            <div className="bg-[#D2E4C4] h-screen flex-grow p-4">
+                <Image
+                src={`/clipart.jpg`}
+                alt="hero"
+                height={100}
+                width={2000}
+                className="rounded-10xl p-5 flex-shrink-0"
+                draggable={false}
+                />
+                <div className="justify-center flex flex-col items-center text-black text-4xl font-semibold text-center h-[550px]">
+                {questionData.question && (
+                    <h1 className="overflow-hidden">{questionData.question}</h1>
+                )}
+                <div className="flex h-[450px] w-[368px]">
+                    <div className="grid grid-cols-2 mt-5 overflow-hidden fixed">
+                    {questionData.answers.map((answer, index) => (
+                        <button
+                        key={index}
+                        onClick={async () => {
+                            console.log(index);
+                            handleButtonClick(questionData.field, answer);
+                            if (activeQuestion === questions.totalQuestions - 1) {
+                            await insertAllData();
+                            router.push("/dashboard");
+                            } else {
+                            setActiveQuestion(activeQuestion + 1);
+                            }
+                        }}
+                        className={`${index === 0 ? "bg-red-500" : index === 1 ? "bg-blue-500" : index === 3 ? "bg-green-500" : "bg-yellow-500"} text-white p-2 m-1 rounded-lg text-[25px] overflow-hidden items-center justify-center`}
+                        // className={`bg-${index === 0 ? 'blue' : index === 1 ? 'green' : index === 2 ? 'red' : index === 3 && 'gray'}-500 text-white p-2 m-1 rounded-lg text-[25px] overflow-hidden items-center justify-center`}
+                        style={{ width: "180px", height: "200px" }} 
+                        >
+                        {answer}
+                        </button>
+                    ))}
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        );
+        }

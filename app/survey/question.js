@@ -5,7 +5,7 @@ export const questions = {
             id: 1,
             field: "type",
             question: "What kind of diabetes do you have?",
-            answers: ["Type 1", "Type 2", "Gestational", "Pre-diabetes", "Other"],
+            answers: ["Type 1", "Type 2", "Gestational", "Pre-Diabetes /Other"],
         },
         {
             id: 2,
