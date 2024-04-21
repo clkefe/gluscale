@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import useUser from "../../hooks/useUser";
 import Image from "next/image";
-import NaviationBar from "../../components/NavigationBar";
+import { IconRobotFace } from "@tabler/icons-react";
 
 export default function Dashboard() {
-  const { user, loading, authenticated, glucoseLevel } = useUser();
+  const { user, loading, authenticated, glucoseLevel, aiFeedback } = useUser();
 
   const [isShaking, setIsShaking] = useState(false);
   const [currentEggStage, setCurrentEggStage] = useState(1);
@@ -65,15 +65,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen bg-orange-100">
       <div className="container mx-auto">
-        {/* Top NavBar */}
-        <div className="flex justify-between pt-6">
-          <div>
-            <NaviationBar />
-          </div>
-        </div>
-
         {/* Live Glucose Level */}
         <div>
           <div className="flex justify-center mt-8">
@@ -112,6 +105,23 @@ export default function Dashboard() {
                 className="object-fill"
                 layout="fixed"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Feedback */}
+        <div>
+          <div className="flex justify-start mt-8 bg-card rounded-md shadow-md">
+            <div className="flex rounded-md p-4">
+              <div className="flex flex-col items-start">
+                <IconRobotFace stroke={1.3} />
+
+                <div className="flex flex-row mt-2">
+                  <div className="text-md">
+                    {loading ? <>...</> : aiFeedback}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

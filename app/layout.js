@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
+import NaviationBar from "../components/NavigationBar";
 
 export const metadata = {
   title: "Create Next App",
@@ -13,13 +14,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " bg-orange-100"}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
+          {/* Top NavBar */}
+          <div className="container flex justify-between pt-6">
+            <div>
+              <NaviationBar />
+            </div>
+          </div>
           {children}
         </ThemeProvider>
       </body>
