@@ -162,7 +162,7 @@ export default function Home() {
           Our Features
         </h2>
 
-        <div class="flex flex-wrap items-center mt-20 text-left text-center">
+        <div class="flex flex-wrap items-center mt-20 text-center">
           <div class="w-full md:w-3/5 lg:w-1/2 px-4">
             <img
               src="https://picsum.photos/400/240"
@@ -181,7 +181,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center mt-20 text-left text-center">
+        <div class="flex flex-wrap items-center mt-20 text-center">
           <div class="w-full md:w-3/5 lg:w-1/2 px-4">
             <img
               src="https://picsum.photos/400/240"
