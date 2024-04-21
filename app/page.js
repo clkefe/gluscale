@@ -27,8 +27,6 @@ export default function Home() {
         .from("survey_data")
         .select("*")
         .eq("user_id", user.id);
-
-        console.log(data1, error);
         
         if(error) {
           console.log(error);
@@ -44,7 +42,6 @@ export default function Home() {
 
     async function fetchData() {
       const isFirstTime = await fetchFirstTime();
-      console.log("isFirstTime", isFirstTime)
       setFirstTime(isFirstTime);
     }
 
