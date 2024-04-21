@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
-import axios from "axios";
 import Image from "next/image";
 import GoogleLogo from "../public/Google_Logo.png";
-import { createClient } from "../lib/supabase/client"
+import axios from "axios";
+import { createClient } from "../lib/supabase/client";
 
 export default function Home() {
   const router = useRouter();
@@ -16,66 +16,77 @@ export default function Home() {
   const { isWearableConnected, loading, authenticated, signUpWithGoogle } =
     useUser();
 
-    const [firstTime, setFirstTime] = useState(null);
-    
-    useEffect(() => {
-      async function fetchFirstTime() {
-        const { data  } = await supabase.auth.getUser();
-        const user = data.user;
-    
-        const { data: data1, error } = await supabase
-          .from("survey_data")
-          .select("*")
-          .eq("user_id", user.id);
-    
-          console.log(data1, error);
-    
-          if(error) {
-            console.log(error);
-            return false;
-          }
-    
-          if(data1.length === 0) {
-            return true;
-          }
-    
+  const [firstTime, setFirstTime] = useState(null);
+
+  useEffect(() => {
+    async function fetchFirstTime() {
+      const { data } = await supabase.auth.getUser();
+      const user = data.user;
+
+      const { data: data1, error } = await supabase
+        .from("survey_data")
+        .select("*")
+        .eq("user_id", user.id);
+
+      console.log(data1, error);
+
+      if (error) {
+        console.log(error);
         return false;
       }
-    
-      async function fetchData() {
-        const isFirstTime = await fetchFirstTime();
-        console.log("isFirstTime", isFirstTime)
-        setFirstTime(isFirstTime);
+
+      if (data1.length === 0) {
+        return true;
       }
-    
-      fetchData();
-    }, []);
-    
-    useEffect(() => {
-      async function linkWearable() {
-        console.log(loading, isWearableConnected);
+
+      return false;
+    }
+
+    async function fetchData() {
+      const isFirstTime = await fetchFirstTime();
+      console.log("isFirstTime", isFirstTime);
+      setFirstTime(isFirstTime);
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function linkWearable() {
+      console.log(loading, isWearableConnected);
+
+      if (loading) return;
+      if (isWearableConnected) return;
+
+      const { data, error } = await axios.get("/auth/link");
+
+      if (error) {
+        return console.log(error);
       }
-      
-      linkWearable();
-    }, [isWearableConnected, loading]);
-    
-    useEffect(() => {
-      if(loading) return;
-    
-      if (authenticated && firstTime) {
-        router.push("/survey");  
-      }
-    }, [authenticated, firstTime, loading]);
+
+      console.log(data);
+    }
+
+    linkWearable();
+  }, [isWearableConnected, loading]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (authenticated && firstTime) {
+      router.push("/survey");
+    }
+  }, [authenticated, firstTime, loading]);
 
   return (
-    <main style={{ textAlign: "center", backgroundColor: "#a6cba4" }}>
-      <section class="bg-orange-100 dark:bg-gray-900">
-        <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-          <div class="mr-auto place-self-center lg:col-span-8">
-            <h1 class="max-w-2xl mb-8 text-4xl font-mono tracking-tight leading-none md:text-5xl xl:text-6xl">
+    <div>
+      <section className="bg-orange-100 pt-12 text-center">
+        <div className="flex flex-row justify-center items-center">
+          <div className="">
+            <h1 className="mb-8 text-4xl font-mono tracking-tight leading-none">
               GluScale
             </h1>
-            <p class="max-w-2xl mb-6 font-mono text-gray justify-center lg:mb-8 md:text-lg lg:text-xl">
+            <p className="mb-6 font-mono text-gray justify-center">
               A Diabetes Companion made for kids.
             </p>
 
@@ -83,10 +94,7 @@ export default function Home() {
               <></>
             ) : authenticated ? (
               <>
-                <Button
-                  onClick={() => router.push("/dashboard")}
-                  variant="contained"
-                >
+                <Button onClick={() => router.push("/dashboard")}>
                   Dashboard
                 </Button>
               </>
@@ -105,132 +113,124 @@ export default function Home() {
                 Continue with Google
               </Button>
             )}
-          </div>
-          <div class="flex items-center justify-center lg:justify-end lg:mt-0 lg:col-span-4 mt-sm">
-            <img
-              src="../../eggs2/egg_8.png"
-              alt="egg8"
-              style={{
-                maxWidth: "40%",
-                height: "auto",
-                objectFit: "scale-down",
-              }}
-            />
+            <div className="flex items-center justify-center mt-8">
+              <Image
+                src="/eggs_0/egg_8.png"
+                alt="egg"
+                width={128}
+                height={128}
+                unoptimized={true}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      <div style={{ paddingTop: "4rem", backgroundColor: "#FFEDD5" }}></div>
-      <div style={{ paddingTop: "4rem", backgroundColor: "#a6cba4" }}></div>
-
-      <div class="container mx-auto max-w-5xl flex gap-12 flex-wrap items-start justify-center md:justify-between">
-        <div class="grid gap-4 justify-items-center text-center md:flex-1">
-          <div class=" rounded-full border-8 border-amber-400 p-4 ">
+      <section className="container bg-[#a6cba4] mx-auto flex gap-12 flex-wrap items-start justify-center my-8 py-16">
+        <div className="grid gap-4 justify-items-center text-center md:flex-1">
+          <div className=" rounded-full border-8 border-amber-400 p-4 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-14 h-14"
+              className="w-14 h-14"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
               ></path>
             </svg>
           </div>
-          <h3 class="text-3xl font-bold">Safe</h3>
+          <h3 className="text-3xl font-bold">Safe</h3>
           <p>Kid-friendly AI trained to respond as a supported companion</p>
         </div>
-        <div class="grid gap-4 justify-items-center text-center md:flex-1">
-          <div class=" rounded-full border-8 border-amber-400 p-4 ">
+        <div className="grid gap-4 justify-items-center text-center md:flex-1">
+          <div className=" rounded-full border-8 border-amber-400 p-4 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-14 h-14"
+              className="w-14 h-14"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
               ></path>
             </svg>
           </div>
-          <h3 class="text-3xl font-bold">Efficient</h3>
+          <h3 className="text-3xl font-bold">Efficient</h3>
           <p>Gamified learning experience, making diabetes managable</p>
         </div>
-        <div class="grid gap-4 justify-items-center text-center md:flex-1">
-          <div class=" rounded-full border-8 border-amber-400 p-4 ">
+        <div className="grid gap-4 justify-items-center text-center md:flex-1">
+          <div className=" rounded-full border-8 border-amber-400 p-4 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-14 h-14"
+              className="w-14 h-14"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
               ></path>
             </svg>
           </div>
-          <h3 class="text-3xl font-bold">Proven</h3>
+          <h3 className="text-3xl font-bold">Proven</h3>
           <p>
             Real-time data with tailored AI responses so you don't have to worry
           </p>
         </div>
-      </div>
+      </section>
 
-      <div style={{ paddingTop: "4rem", backgroundColor: "#a6cba4" }}></div>
-      <div style={{ paddingTop: "4rem", backgroundColor: "#FFEDD5" }}></div>
-
-      <div class="text-center" style={{ backgroundColor: "#FFEDD5" }}>
-        <h2 class="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+      <div className="text-center">
+        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
           Our Features
         </h2>
 
-        <div class="flex flex-wrap items-center mt-20 text-center">
-          <div class="w-full md:w-3/5 lg:w-1/2 px-4">
+        <div className="flex flex-wrap items-center mt-20 text-center">
+          <div className="w-full md:w-3/5 lg:w-1/2 px-4">
             <img
               src="https://picsum.photos/400/240"
               alt="gem"
-              class="inline-block rounded shadow-lg border border-merino-400"
+              className="inline-block rounded shadow-lg border border-merino-400"
             />
           </div>
-          <div class="w-full md:w-2/5 lg:w-1/2 px-4 text-center md:text-left lg:pl-12">
-            <h3 class="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
+          <div className="w-full md:w-2/5 lg:w-1/2 px-4 text-center md:text-left lg:pl-12">
+            <h3 className="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
               Revolutionize Diabetes Management
             </h3>
-            <p class="sm:text-lg mt-6">
+            <p className="sm:text-lg mt-6">
               GluScale serves as an interactive tool designed to educate and
               empower kids to become experts in their own health.
             </p>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center mt-20 text-center">
-          <div class="w-full md:w-3/5 lg:w-1/2 px-4">
+        <div className="flex flex-wrap items-center mt-20 text-center">
+          <div className="w-full md:w-3/5 lg:w-1/2 px-4">
             <img
               src="https://picsum.photos/400/240"
               alt="project members"
-              class="inline-block rounded shadow-lg border border-merino-400"
+              className="inline-block rounded shadow-lg border border-merino-400"
             />
           </div>
           <div
-            class="w-full md:w-2/5 lg:w-1/2 px-4 md:order-first text-center md:text-left lg:pr-12"
+            className="w-full md:w-2/5 lg:w-1/2 px-4 md:order-first text-center md:text-left lg:pr-12"
             style={{ backgroundColor: "#FFEDD5" }}
           >
-            <h3 class="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
+            <h3 className="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
               Personalized Child Care
             </h3>
-            <p class="sm:text-lg mt-6">
+            <p className="sm:text-lg mt-6">
               Continuously analyze glucose readings in real-time, providing
               personalized responses and recommendations every five minutes.
               Your child receives immediate and easy to learn support based on
@@ -240,63 +240,61 @@ export default function Home() {
         </div>
       </div>
 
-      <div style={{ paddingTop: "4rem", backgroundColor: "#FFEDD5" }}></div>
-
-      <footer class="flex flex-col space-y-10 justify-center m-10">
-        <div class="flex justify-center space-x-5">
-          <a
-            href="https://www.linkedin.com/in/-anthonytam/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-linkedin"
-              viewBox="0 0 16 16"
+      <div className="bg-[#a6cba4] px-24 mt-12">
+        <footer className="flex flex-col space-y-10 justify-center py-8">
+          <div className="flex justify-center space-x-5 ">
+            <a
+              href="https://www.linkedin.com/in/-anthonytam/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-            </svg>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/ivan-vuong/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-linkedin"
-              viewBox="0 0 16 16"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-linkedin"
+                viewBox="0 0 16 16"
+              >
+                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+              </svg>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ivan-vuong/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-            </svg>
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-linkedin"
-              viewBox="0 0 16 16"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-linkedin"
+                viewBox="0 0 16 16"
+              >
+                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-            </svg>
-          </a>
-        </div>
-        <p>Created with love at LAHacks 2024</p>
-      </footer>
-
-      <div style={{ paddingTop: "1rem", backgroundColor: "#a6cba4" }}></div>
-    </main>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-linkedin"
+                viewBox="0 0 16 16"
+              >
+                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
+              </svg>
+            </a>
+          </div>
+          <p className="pb-4">Created with love at LAHacks 2024</p>
+        </footer>
+      </div>
+    </div>
   );
 }
