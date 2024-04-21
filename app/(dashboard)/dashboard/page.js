@@ -160,7 +160,7 @@ export default function Dashboard() {
     return <div>Loading...</div>;
   } else if (!authenticated) {
     // TODO: Redirect to login page
-    return <div>Not authenticated</div>;
+    router.push("/");
   }
 
   return (
