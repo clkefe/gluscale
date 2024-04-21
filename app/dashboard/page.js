@@ -13,9 +13,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
 } from "../../components/ui/dialog";
+import BottomNav from "../../components/BottomNav";
 
 export default function Dashboard() {
   const supabase = createClient();
@@ -257,6 +257,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      {/* <BottomNav /> */}
     </div>
   );
 }

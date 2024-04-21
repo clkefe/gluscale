@@ -5,6 +5,7 @@ import useUser from "../../../hooks/useUser";
 import Image from "next/image";
 import { Badge } from "../../../components/ui/badge";
 import { createClient } from "../../../lib/supabase/client";
+import BottomNav from "../../../components/BottomNav";
 
 const DRAGONS = [
   {
@@ -79,6 +80,7 @@ export default function Dashboard() {
           </>
         ))}
       </div>
+      {/* <BottomNav /> */}
     </div>
   );
 }
