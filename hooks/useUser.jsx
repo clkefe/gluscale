@@ -14,8 +14,8 @@ export default function useUser() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isWearableConnected, setIsWearableConnected] = useState(false);
   const [glucoseLevel, setGlucoseLevel] = useState(null);
+  const [aiFeedback, setAiFeedback] = useState(null);
 
-  // This timer gets the users glucose level every 5 minutes from supabase's 'glucose_level' table
   useEffect(() => {
     async function getGlucoseLevel() {
       const { data, error } = await supabase
@@ -31,6 +31,17 @@ export default function useUser() {
 
       if (data.length > 0) {
         setGlucoseLevel(data[0].value);
+      }
+
+      const { data: data3, error: error3 } = await supabase
+        .from("gemini_feedback")
+        .select()
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      console.log(data3);
+      if (data3.length > 0) {
+        setAiFeedback(data3[0]?.advice);
       }
 
       return setTimeout(getGlucoseLevel, 300000);
@@ -117,5 +128,6 @@ export default function useUser() {
     signOut,
     isWearableConnected,
     glucoseLevel,
+    aiFeedback,
   };
 }
