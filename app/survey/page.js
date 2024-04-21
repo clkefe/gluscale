@@ -1,14 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-// import { createClient } from "@supabase/supabase-js";
 import { questions } from "../survey/question.js";
 import { useRouter } from "next/navigation";
 import { Button } from "../../components/ui/button.tsx";
 import Image from "next/image";
 import { createClient } from "../../lib/supabase/client.js";
-
-
 
 export default function Home() {
     const supabase = createClient();
@@ -29,6 +26,7 @@ export default function Home() {
             ])
 
             console.log(error);
+
     }
 
     const handleButtonClick = (field, newValue) => {
@@ -44,6 +42,7 @@ export default function Home() {
                 break;
             case "age":
                 setAge(newValue);
+
                 break;
             default:
                 break;

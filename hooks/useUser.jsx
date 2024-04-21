@@ -14,6 +14,43 @@ export default function useUser() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isWearableConnected, setIsWearableConnected] = useState(false);
 
+  const [glucoseLevel, setGlucoseLevel] = useState(null);
+  const [aiFeedback, setAiFeedback] = useState(null);
+
+  useEffect(() => {
+    async function getGlucoseLevel() {
+      const { data, error } = await supabase
+        .from("glucose_level")
+        .select("value")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data.length > 0) {
+        setGlucoseLevel(data[0].value);
+      }
+
+      const { data: data3, error: error3 } = await supabase
+        .from("gemini_feedback")
+        .select()
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      console.log(data3);
+      if (data3.length > 0) {
+        setAiFeedback(data3[0]?.advice);
+      }
+
+      return setTimeout(getGlucoseLevel, 300000);
+    }
+
+    getGlucoseLevel();
+  }, [supabase]);
+
 
   const getProfile = useCallback(async () => {
     try {
@@ -30,7 +67,9 @@ export default function useUser() {
 
       if (error) throw error;
       if (data) {
-        setUser(data.user.user_metadata);
+
+        setUser({ id: data.user.id });
+
         setAuthenticated(true);
       }
     } catch (error) {
@@ -92,5 +131,7 @@ export default function useUser() {
     signUpWithEmail,
     signOut,
     isWearableConnected,
+    glucoseLevel,
+    aiFeedback,
   };
 }
