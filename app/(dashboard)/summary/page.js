@@ -1,9 +1,12 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import React from "react";
+import useUser from "../../../hooks/useUser";
 
 export default function Dashboard() {
+  const { user, loading, error } = useUser();
+
   return (
     <div className="bg-orange-100 flex justify-center container py-4 h-screen">
       <div className="flex flex-col items-center justify-center">

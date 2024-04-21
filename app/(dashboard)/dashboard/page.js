@@ -32,6 +32,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (loading) return;
     if (!authenticated) return;
+
     async function getDragonId() {
       const { data, error } = await supabase
         .from("dragon_egg")
@@ -48,6 +49,16 @@ export default function Dashboard() {
 
       if (data.length > 0) {
         setCurrentDragonId(data[0].dragon_id);
+      } else {
+        const newDragonId = Math.floor(Math.random() * 2);
+        await supabase.from("dragon_egg").insert([
+          {
+            user_id: user.id,
+            dragon_id: newDragonId,
+          },
+        ]);
+
+        setCurrentDragonId(newDragonId);
       }
     }
 
