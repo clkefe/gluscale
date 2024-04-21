@@ -52,19 +52,17 @@ const BottomNav = () => {
     <nav className="fixed inset-x-0 bottom-0 bg-orange-200 border-t shadow-lg">
       <div className="flex justify-between items-center px-8 py-3 max-w-screen-xl mx-auto">
         {PAGES.map((page) => (
-          <>
-            <Link
-              key={page.title}
-              href={page.href}
-              className={`flex items-center ${
-                activePage === page && "border-b-2 border-b-orange-400"
-              }`}
-              width={page.width}
-              height={page.height}
-            >
-              {page.icon}
-            </Link>
-          </>
+          <Link
+            key={page.title}
+            href={page.href}
+            className={`flex items-center ${
+              activePage === page && "border-b-2 border-b-orange-400"
+            }`}
+            width={page.width}
+            height={page.height}
+          >
+            {page.icon}
+          </Link>
         ))}
       </div>
     </nav>
