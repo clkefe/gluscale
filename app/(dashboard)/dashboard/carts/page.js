@@ -59,7 +59,7 @@ export default function Dashboard() {
     }
 
     getDragons();
-  }, [loading.authenticated, user]);
+  }, [loading, authenticated, user]);
 
   return (
     <div className="bg-orange-100 container py-4 h-screen">
