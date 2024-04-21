@@ -164,7 +164,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="w-full h-screen bg-orange-100">
+    <div className="w-full bg-orange-100">
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="w-11/12 sm:max-w-md rounded-md">
           <DialogHeader>
@@ -205,7 +205,7 @@ export default function Dashboard() {
                 <div className="text-2xl font-mono">Sugar Level</div>
                 <div className="flex flex-row justify-start items-end">
                   <div className="text-6xl font-semibold">
-                    {loading ? <>...</> : glucoseLevel?.toFixed(2)}
+                    {loading ? <>NaN</> : glucoseLevel?.toFixed(2)}
                   </div>
 
                   <div className="text-lg font-light text-muted-foreground ml-1">
@@ -248,7 +248,16 @@ export default function Dashboard() {
 
                 <div className="flex flex-row mt-2">
                   <div className="text-md">
-                    {loading ? <>...</> : aiFeedback}
+                    {loading ? (
+                      <>Loading</>
+                    ) : aiFeedback ? (
+                      aiFeedback
+                    ) : (
+                      <>
+                        I need you to wait a little bit more to get a feedback!
+                        I am still learning about you.
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
