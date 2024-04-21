@@ -16,8 +16,6 @@ export default function useUser() {
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
 
-  const [glucoseLevel, setGlucoseLevel] = useState(null);
-  const [aiFeedback, setAiFeedback] = useState(null);
 
   useEffect(() => {
     async function getGlucoseLevel() {

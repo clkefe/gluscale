@@ -34,12 +34,12 @@ export default function Home() {
 
   return (
     <main style={{ textAlign: 'center', backgroundColor: '#a6cba4' }}>
-      <section class="bg-white dark:bg-gray-900" style={{ backgroundColor: '#C4A484' }}>
+      <section class="bg-orange-100 dark:bg-gray-900" >
     <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
       <div class="mr-auto place-self-center lg:col-span-8">
-        <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">Diabetes Companion</h1>
-        <p class="max-w-2xl mb-6 font-light text-white lg:mb-8 md:text-lg lg:text-xl dark:text-white">Made especially for kids.</p>
-        <a href="#" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+        <h1 class="max-w-2xl mb-8 text-4xl font-mono tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">GluScale</h1>
+        <p class="max-w-2xl mb-6 font-mono text-gray justify-center lg:mb-8 md:text-lg lg:text-xl dark:text-white ">A Diabetes Companion made for kids.</p>
+        <a href="#" class="inline-flex items-center justify-center px-5 py-3 mr-3 mb-12 text-base font-medium text-center text-gray rounded-lg bg-primary-700">
           Join Now
           <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
           </a>
@@ -55,13 +55,13 @@ export default function Home() {
             )}
           </div>
       <div class="flex items-center justify-center lg:justify-end lg:mt-0 lg:col-span-4 mt-sm">
-        <img src="../../eggs2/egg_8.png" alt="egg8" style={{ maxWidth: '60%', height: 'auto', objectFit: 'contain' }}/>
+        <img src="../../eggs2/egg_8.png" alt="egg8" style={{ maxWidth: '40%', height: 'auto', objectFit: 'scale-down' }}/>
       </div>                
     </div>
   </section>
 
 
-<div style={{ paddingTop: '4rem', backgroundColor: '#C4A484' }}></div>
+<div style={{ paddingTop: '4rem', backgroundColor: '#FFEDD5' }}></div>
 <div style={{ paddingTop: '4rem', backgroundColor: '#a6cba4' }}></div>
 
 
@@ -105,9 +105,9 @@ export default function Home() {
 </div>
 
 <div style={{ paddingTop: '4rem', backgroundColor: '#a6cba4' }}></div>
-<div style={{ paddingTop: '4rem', backgroundColor: '#C4A484' }}></div>
+<div style={{ paddingTop: '4rem', backgroundColor: '#FFEDD5' }}></div>
 
-<div class="text-center" style={{ backgroundColor: '#C4A484' }}>
+<div class="text-center" style={{ backgroundColor: '#FFEDD5' }}>
     <h2 class="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
         Our Features
     </h2>
@@ -121,8 +121,7 @@ export default function Home() {
                 Revolutionize Diabetes Management
             </h3>
             <p class="sm:text-lg mt-6">
-            Education is key to effective diabetes management. Our app serves as a 
-            an interactive tool designed to educate and empower kids to become experts 
+            GluScale serves as an interactive tool designed to educate and empower kids to become experts 
             in their own health.
             </p>
         </div>
@@ -132,21 +131,21 @@ export default function Home() {
         <div class="w-full md:w-3/5 lg:w-1/2 px-4">
             <img src="https://picsum.photos/400/240" alt="project members" class="inline-block rounded shadow-lg border border-merino-400"/>
         </div>
-        <div class="w-full md:w-2/5 lg:w-1/2 px-4 md:order-first text-center md:text-left lg:pr-12" style={{ backgroundColor: '#C4A484' }}>
+        <div class="w-full md:w-2/5 lg:w-1/2 px-4 md:order-first text-center md:text-left lg:pr-12" style={{ backgroundColor: '#FFEDD5' }}>
             <h3 class="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
                 Personalized Child Care
             </h3>
             <p class="sm:text-lg mt-6">
             Continuously analyze glucose readings in real-time, providing personalized
             responses and recommendations every five minutes. Your child 
-            receives immediate and easy to learn support based on their unique circumstances
+            receives immediate and easy to learn support based on their unique circumstances.
             </p>
         </div>
     </div>
 
 </div>
 
-<div style={{ paddingTop: '4rem', backgroundColor: '#C4A484' }}></div>
+<div style={{ paddingTop: '4rem', backgroundColor: '#FFEDD5' }}></div>
 
 <footer class="flex flex-col space-y-10 justify-center m-10">
 
