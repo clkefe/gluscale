@@ -17,7 +17,6 @@ export default function Home() {
   const [_age, setAge] = useState("");
 
   const questionData = questions.questions[activeQuestion];
-  console.log(activeQuestion, questionData);
 
   async function insertAllData() {
     const { error } = await supabase.from("survey_data").insert([
