@@ -7,6 +7,8 @@ import useUser from "../hooks/useUser";
 import Image from "next/image";
 import GoogleLogo from "../public/Google_Logo.png";
 import { createClient } from "../lib/supabase/client";
+import Feedback from "../public/TextFeedback.png";
+import Glucose from "../public/TextGlucose.png";
 
 export default function Home() {
   const router = useRouter();
@@ -177,11 +179,13 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center mt-20 text-center">
           <div className="w-full md:w-3/5 lg:w-1/2 px-4">
-            <img
-              src="https://picsum.photos/400/240"
-              alt="gem"
-              className="inline-block rounded shadow-lg border border-merino-400"
-            />
+            <Image
+                  src={Glucose}
+                  alt="Glucose"
+                  width={300}
+                  height={200}
+                  className="inline-block rounded shadow-lg">
+            </Image>
           </div>
           <div className="w-full md:w-2/5 lg:w-1/2 px-4 text-center md:text-left lg:pl-12">
             <h3 className="font-bold mt-8 text-xl md:mt-0 sm:text-2xl">
@@ -196,11 +200,13 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center mt-20 text-center">
           <div className="w-full md:w-3/5 lg:w-1/2 px-4">
-            <img
-              src="https://picsum.photos/400/240"
-              alt="project members"
-              className="inline-block rounded shadow-lg border border-merino-400"
-            />
+            <Image
+                  src={Feedback}
+                  alt="Feedback"
+                  width={300}
+                  height={200}
+                  className="inline-block rounded shadow-lg">
+            </Image>
           </div>
           <div
             className="w-full md:w-2/5 lg:w-1/2 px-4 md:order-first text-center md:text-left lg:pr-12"
@@ -255,7 +261,7 @@ export default function Home() {
               </svg>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/efeclk/"
               target="_blank"
               rel="noopener noreferrer"
             >
