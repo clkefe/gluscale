@@ -128,10 +128,14 @@ export default function Dashboard() {
     if (!authenticated) return;
   
     async function getGlucoseHigh() {
+      const filterDate = new Date();
+      filterDate.setHours(0, 0, 0, 0);
+      const yesterdayStr = filterDate.toISOString();
       const { data, error } = await supabase
         .from("glucose_level")
         .select("*")
         .eq("user_id", user.id)
+        .gte("created_at", yesterdayStr)
         .order("value", { ascending: false })
         .limit(1);
   
@@ -149,10 +153,15 @@ export default function Dashboard() {
     }
   
     async function getGlucoseLow() {
+      const filterDate = new Date();
+      filterDate.setHours(0, 0, 0, 0);
+      const yesterdayStr = filterDate.toISOString();
+
       const { data, error } = await supabase
         .from("glucose_level")
         .select("*")
         .eq("user_id", user.id)
+        .gte("created_at", yesterdayStr)
         .order("value", { ascending: true })
         .limit(1);
   
