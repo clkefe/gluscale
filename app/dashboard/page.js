@@ -26,6 +26,7 @@ export default function Dashboard() {
 
   const [isShaking, setIsShaking] = useState(false);
   const [currentEggStage, setCurrentEggStage] = useState(1);
+
   const [showDialog, setShowDialog] = useState(false);
   const [currentDragonId, setCurrentDragonId] = useState(null);
 

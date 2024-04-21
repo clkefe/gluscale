@@ -13,6 +13,8 @@ export default function useUser() {
   const [user, setUser] = useState({});
   const [authenticated, setAuthenticated] = useState(false);
   const [isWearableConnected, setIsWearableConnected] = useState(false);
+  const [glucoseLevel, setGlucoseLevel] = useState(null);
+  const [aiFeedback, setAiFeedback] = useState(null);
 
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
@@ -50,7 +52,6 @@ export default function useUser() {
 
     getGlucoseLevel();
   }, [supabase]);
-
 
   const getProfile = useCallback(async () => {
     try {
