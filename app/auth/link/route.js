@@ -2,6 +2,7 @@ import { createClient } from "../../../lib/supabase/server";
 import axios from "axios";
 
 export async function GET() {
+  console.log("AA");
   const supabase = createClient();
   const userSession = await supabase.auth.getSession();
 
@@ -33,9 +34,11 @@ export async function GET() {
     });
 
   if (error) {
+    console.log("SSD", error);
     return Response.json({ error: error });
   }
 
+  console.log("DFDSF");
   const { error: error2 } = await supabase.from("wearable_connection").insert({
     user_id: user.data.user.id,
     vital_uid: response.user_id,
