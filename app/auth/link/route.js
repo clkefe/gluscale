@@ -36,7 +36,7 @@ export async function GET() {
     return Response.json({ error: error });
   }
 
-  const { error: error2 } = await supabase.from("wearable_connection").upsert({
+  const { error: error2 } = await supabase.from("wearable_connection").insert({
     user_id: user.data.user.id,
     vital_uid: response.user_id,
   });

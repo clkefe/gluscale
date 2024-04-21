@@ -6,6 +6,8 @@ import { createClient } from "../lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { getURL } from "../lib/utils";
 
+import axios from "axios";
+
 export default function useUser() {
   const supabase = createClient();
   const router = useRouter();
@@ -16,6 +18,34 @@ export default function useUser() {
 
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
+
+  useEffect(() => {
+    if (loading) return;
+    if (!authenticated) return;
+    if (!user) return;
+
+    async function linkWearable() {
+      const { data: dataWearable, error: errorWearable } = await supabase
+        .from("wearable_connection")
+        .select()
+        .eq("user_id", user.id);
+
+      if (errorWearable) throw error;
+
+      const isWearableConnected = dataWearable.length > 0;
+      console.log(loading, isWearableConnected, dataWearable);
+
+      if (isWearableConnected) return;
+
+      const { error } = await axios.get("/auth/link");
+
+      if (error) {
+        return console.log(error);
+      }
+    }
+
+    linkWearable();
+  }, [user, loading, authenticated]);
 
   useEffect(() => {
     async function getGlucoseLevel() {
@@ -40,7 +70,6 @@ export default function useUser() {
         .order("created_at", { ascending: false })
         .limit(1);
 
-      console.log(data3);
       if (data3.length > 0) {
         setAiFeedback(data3[0]?.advice);
       }
@@ -58,17 +87,8 @@ export default function useUser() {
       const { data, error } = await supabase.auth.getUser();
       if (error) throw error;
 
-      const { data: data2, error: error2 } = await supabase
-        .from("wearable_connection")
-        .select()
-        .eq("user_id", data.user.id);
-
-      if (error2) throw error;
-
-      const isWearableConnected = data2.length > 0;
-
       if (data) {
-        setUser({ id: data.user.id, isWearableConnected });
+        setUser({ id: data.user.id });
         setAuthenticated(true);
       }
     } catch (error) {
@@ -104,8 +124,6 @@ export default function useUser() {
         console.error(error);
         return;
       }
-
-      console.log(data);
     } catch (error) {
       console.error(error);
     }

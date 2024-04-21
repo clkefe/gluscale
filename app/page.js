@@ -6,36 +6,34 @@ import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 import Image from "next/image";
 import GoogleLogo from "../public/Google_Logo.png";
-import axios from "axios";
 import { createClient } from "../lib/supabase/client";
 
 export default function Home() {
   const router = useRouter();
   const supabase = createClient();
 
-  const { isWearableConnected, loading, authenticated, signUpWithGoogle } =
-    useUser();
+  const { user, loading, authenticated, signUpWithGoogle } = useUser();
 
   const [firstTime, setFirstTime] = useState(null);
 
   useEffect(() => {
-    async function fetchFirstTime() {
-      const { data } = await supabase.auth.getUser();
-      const user = data.user;
+    if (loading) return;
+    if (!authenticated) return;
 
-      const { data: data1, error } = await supabase
+    async function fetchFirstTime() {
+      const { data, error } = await supabase
         .from("survey_data")
         .select("*")
         .eq("user_id", user.id);
 
-      console.log(data1, error);
+      console.log(data, error);
 
       if (error) {
         console.log(error);
         return false;
       }
 
-      if (data1.length === 0) {
+      if (data.length === 0) {
         return true;
       }
 
@@ -49,26 +47,7 @@ export default function Home() {
     }
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function linkWearable() {
-      console.log(loading, isWearableConnected);
-
-      if (loading) return;
-      if (isWearableConnected) return;
-
-      const { data, error } = await axios.get("/auth/link");
-
-      if (error) {
-        return console.log(error);
-      }
-
-      console.log(data);
-    }
-
-    linkWearable();
-  }, [isWearableConnected, loading]);
+  }, [loading, authenticated, user]);
 
   useEffect(() => {
     if (loading) return;
