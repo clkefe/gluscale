@@ -1,27 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import { Button } from "@mui/material";
-
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_URL);
+import { questions } from "../survey/question.js";
+import { useRouter } from "next/navigation";
+import { Button } from "../../components/ui/button.tsx";
+import Image from "next/image";
+import { createClient } from "../../lib/supabase/client.js";
 
 export default function Home() {
+    const supabase = createClient();
+
+    const [activeQuestion, setActiveQuestion] = useState(0);
     const [_type, setType] = useState("");
     const [_time_diagnosis, setTimeDiagnosis] = useState("");
     const [_medication, setMedication] = useState("");
-    const [_purpose, setPurpose] = useState("");
-    const [_insulin_therapy, setInsulinTherapy] = useState("");
-    const [_blood_sugar_units, setBloodSugarUnits] = useState("");
-    const [_target_range, setTargetRange] = useState("");
-    const [_user_id, setUserId] = useState("");
+    const [_age, setAge] = useState("");
+    const router = useRouter();
+    const questionData = questions.questions[activeQuestion];
 
     async function insertAllData() {
         const { error } = await supabase
             .from("survey_data")
             .insert([
-                {type: _type, time_diagnosis: _time_diagnosis, medication: _medication, purpose: _purpose, insulin_therapy: _insulin_therapy, blood_sugar_units: _blood_sugar_units, target_range:  _target_range},
+                {type: _type, time_diagnosis: _time_diagnosis, medication: _medication, age: _age},
             ])
+
+            console.log(error);
+
     }
 
     const handleButtonClick = (field, newValue) => {
@@ -35,30 +40,56 @@ export default function Home() {
             case "medication":
                 setMedication(newValue);
                 break;
-            case "purpose":
-                setPurpose(newValue);
-                break;
-            case "insulin_therapy":
-                setInsulinTherapy(newValue);
-                break;
-            case "blood_sugar_units":
-                setBloodSugarUnits(newValue);
-                break;
-            case "target_range":
-                setTargetRange(newValue);
+            case "age":
+                setAge(newValue);
+
                 break;
             default:
                 break;
         }
     };
 
-    return (
-      <main>
-        <div>
-            <Button onClick={() => handleButtonClick("type", "Type 1")}>"Type 1"</Button>
-            <Button onClick={() => insertAllData()}>Finish Survey</Button>
-        </div>
-      </main>
-    );
-  }
-  
+        return (
+            <div>
+            <div className="bg-[#D2E4C4] h-screen flex-grow p-4">
+                <Image
+                src={`/clipart.jpg`}
+                alt="hero"
+                height={100}
+                width={2000}
+                className="rounded-10xl p-5 flex-shrink-0"
+                draggable={false}
+                />
+                <div className="justify-center flex flex-col items-center text-black text-4xl font-semibold text-center h-[550px]">
+                {questionData.question && (
+                    <h1 className="overflow-hidden">{questionData.question}</h1>
+                )}
+                <div className="flex h-[450px] w-[368px]">
+                    <div className="grid grid-cols-2 mt-5 overflow-hidden fixed">
+                    {questionData.answers.map((answer, index) => (
+                        <button
+                        key={index}
+                        onClick={async () => {
+                            console.log(index);
+                            handleButtonClick(questionData.field, answer);
+                            if (activeQuestion === questions.totalQuestions - 1) {
+                            await insertAllData();
+                            router.push("/dashboard");
+                            } else {
+                            setActiveQuestion(activeQuestion + 1);
+                            }
+                        }}
+                        className={`${index === 0 ? "bg-red-500" : index === 1 ? "bg-blue-500" : index === 3 ? "bg-green-500" : "bg-yellow-500"} text-white p-2 m-1 rounded-lg text-[25px] overflow-hidden items-center justify-center`}
+                        // className={`bg-${index === 0 ? 'blue' : index === 1 ? 'green' : index === 2 ? 'red' : index === 3 && 'gray'}-500 text-white p-2 m-1 rounded-lg text-[25px] overflow-hidden items-center justify-center`}
+                        style={{ width: "180px", height: "200px" }} 
+                        >
+                        {answer}
+                        </button>
+                    ))}
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        );
+        }

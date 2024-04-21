@@ -171,7 +171,6 @@ export default function Home() {
 
     <div style={{ paddingTop: '1rem', backgroundColor: '#a6cba4' }}></div>
 
-
     </main>
   );
 }

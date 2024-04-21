@@ -16,6 +16,9 @@ export default function useUser() {
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
 
+  const [glucoseLevel, setGlucoseLevel] = useState(null);
+  const [aiFeedback, setAiFeedback] = useState(null);
+
   useEffect(() => {
     async function getGlucoseLevel() {
       const { data, error } = await supabase
@@ -65,7 +68,9 @@ export default function useUser() {
 
       if (error) throw error;
       if (data) {
-        setUser(data.user.user_metadata);
+
+        setUser({ id: data.user.id });
+
         setAuthenticated(true);
       }
     } catch (error) {
