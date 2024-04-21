@@ -12,7 +12,7 @@ export default function useUser() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
   const [authenticated, setAuthenticated] = useState(false);
-  const [isWearableConnected, setIsWearableConnected] = useState(false);
+
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
 
@@ -54,21 +54,21 @@ export default function useUser() {
   const getProfile = useCallback(async () => {
     try {
       setLoading(true);
+
       const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
 
       const { data: data2, error: error2 } = await supabase
         .from("wearable_connection")
         .select()
         .eq("user_id", data.user.id);
 
+      if (error2) throw error;
+
       const isWearableConnected = data2.length > 0;
-      setIsWearableConnected(isWearableConnected);
 
-      if (error) throw error;
       if (data) {
-
-        setUser({ id: data.user.id });
-
+        setUser({ id: data.user.id, isWearableConnected });
         setAuthenticated(true);
       }
     } catch (error) {
@@ -76,7 +76,7 @@ export default function useUser() {
     }
 
     setLoading(false);
-  }, [supabase]);
+  }, []);
 
   const signUpWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -115,7 +115,7 @@ export default function useUser() {
     await supabase.auth.signOut();
     setAuthenticated(false);
 
-    router.push("/auth/signin");
+    router.push("/");
   };
 
   useEffect(() => {
@@ -129,7 +129,6 @@ export default function useUser() {
     signUpWithGoogle,
     signUpWithEmail,
     signOut,
-    isWearableConnected,
     glucoseLevel,
     aiFeedback,
   };

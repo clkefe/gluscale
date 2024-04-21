@@ -79,7 +79,7 @@ const checkDragonEgg = async (supabase, userId) => {
   const { error: error2 } = await supabase.from("dragon_egg").insert({
     user_id: userId,
     created_at: new Date(),
-    dragon_id: 1,
+    dragon_id: Math.floor(Math.random() * 2),
   });
 
   console.log(error2);

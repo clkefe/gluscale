@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
-import useUser from "../../hooks/useUser";
+import React, { useState, useEffect } from "react";
+import useUser from "../../../hooks/useUser";
 import Image from "next/image";
 import { IconRobotFace } from "@tabler/icons-react";
-import { createClient } from "../../lib/supabase/client";
-import { Button } from "../../components/ui/button";
+import { createClient } from "../../../lib/supabase/client";
+import { Button } from "../../../components/ui/button";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -13,9 +13,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
-} from "../../components/ui/dialog";
+} from "../../../components/ui/dialog";
 
 export default function Dashboard() {
   const supabase = createClient();
@@ -257,6 +256,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      {/* <BottomNav /> */}
     </div>
   );
 }
