@@ -21,7 +21,7 @@ import { Drawer, DrawerContent, DrawerTrigger, DrawerClose } from "./ui/drawer";
 const NAVIGATION = [
   {
     title: "Home",
-    href: "/",
+    href: "/dashboard",
     icon: <IconHome2 stroke={1} />,
   },
   {
