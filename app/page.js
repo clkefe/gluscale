@@ -11,7 +11,8 @@ import GoogleLogo from "../public/Google_Logo.png";
 export default function Home() {
   const router = useRouter();
 
-  const { isWearableConnected, loading, authenticated } = useUser();
+  const { isWearableConnected, loading, authenticated, signUpWithGoogle } =
+    useUser();
 
   //TODO: Do this in the useUser hook
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function Home() {
             ) : (
               <Button
                 className="w-56 text-foreground select-none bg-orange-400 hover:bg-orange-500"
-                onClick={() => signUp("google")}
+                onClick={() => signUpWithGoogle()}
               >
                 <Image
                   src={GoogleLogo}
