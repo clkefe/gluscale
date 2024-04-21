@@ -1,18 +1,55 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 import Image from 'next/image';
 // import { Hero } from "../components/hero"
 import axios from "axios";
+import { createClient } from "../lib/supabase/client"
 
 export default function Home() {
   const router = useRouter();
+  const supabase = createClient();
 
   const { user, isWearableConnected, loading, authenticated, signOut } =
     useUser();
+
+  const [firstTime, setFirstTime] = useState(null);
+  
+  useEffect(() => {
+    async function fetchFirstTime() {
+      const { data  } = await supabase.auth.getUser();
+      const user = data.user;
+      
+      const { data: data1, error } = await supabase
+        .from("survey_data")
+        .select("*")
+        .eq("user_id", user.id);
+
+        console.log(data1, error);
+        
+        if(error) {
+          console.log(error);
+          return false;
+        }
+
+        if(data1.length === 0) {
+          return true;
+        }
+
+      return false;
+    }
+
+    async function fetchData() {
+      const isFirstTime = await fetchFirstTime();
+      console.log("isFirstTime", isFirstTime)
+      setFirstTime(isFirstTime);
+    }
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     async function linkWearable() {
@@ -31,6 +68,14 @@ export default function Home() {
 
     linkWearable();
   }, [isWearableConnected, loading]);
+
+  useEffect(() => {
+    if(loading) return;
+
+    if (authenticated && firstTime) {
+      router.push("/survey");  
+    }
+  }, [authenticated, firstTime, loading]);
 
   return (
     <main style={{ textAlign: 'center', backgroundColor: '#a6cba4' }}>
