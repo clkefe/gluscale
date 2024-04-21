@@ -74,48 +74,45 @@ export default function Dashboard() {
 
     async function checkForCart() {
       const currentTime = new Date();
-      const currentHours = currentTime.getHours();
 
-      if (currentHours >= 20 && currentHours < 24) {
-        // Check if the cart was created today
-        const filterDate = new Date();
-        filterDate.setHours(0, 0, 0, 0);
-        const filterDateString = filterDate.toISOString();
+      // Check if the cart was created today
+      const filterDate = new Date();
+      filterDate.setHours(0, 0, 0, 0);
+      const filterDateString = filterDate.toISOString();
 
-        const { data, error } = await supabase
-          .from("dragon_cart")
-          .select()
-          .eq("user_id", user.id)
-          .gte("created_at", filterDateString)
-          .order("created_at", { ascending: false })
-          .limit(1);
+      const { data, error } = await supabase
+        .from("dragon_cart")
+        .select()
+        .eq("user_id", user.id)
+        .gte("created_at", filterDateString)
+        .order("created_at", { ascending: false })
+        .limit(1);
 
-        if (error) {
-          console.error(error);
-          return;
-        }
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-        const dragon_cart = data[0];
+      const dragon_cart = data[0];
 
-        if (!dragon_cart) {
-          console.log("No cart found");
-          return;
-        }
+      if (!dragon_cart) {
+        console.log("No cart found");
+        return;
+      }
 
-        if (!dragon_cart.seen_by_user) {
-          console.log("You got a cart!");
-          setShowDialog(true);
+      if (!dragon_cart.seen_by_user) {
+        console.log("You got a cart!");
+        setShowDialog(true);
 
-          const { error } = await supabase.from("dragon_cart").upsert([
-            {
-              id: dragon_cart.id,
-              seen_by_user: true,
-              dragon_id: dragon_cart.dragon_id,
-            },
-          ]);
+        const { error } = await supabase.from("dragon_cart").upsert([
+          {
+            id: dragon_cart.id,
+            seen_by_user: true,
+            dragon_id: dragon_cart.dragon_id,
+          },
+        ]);
 
-          console.log(error);
-        }
+        console.log(error);
       }
     }
 
