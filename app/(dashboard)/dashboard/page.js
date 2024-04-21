@@ -29,6 +29,10 @@ export default function Dashboard() {
   const [showDialog, setShowDialog] = useState(false);
   const [currentDragonId, setCurrentDragonId] = useState(null);
 
+  const [glucoseLow, setGlucoseLow] = useState(0);
+  const [glucoseHigh, setGlucoseHigh] = useState(0);
+
+
   useEffect(() => {
     if (loading) return;
     if (!authenticated) return;
@@ -108,6 +112,56 @@ export default function Dashboard() {
     checkForCart();
   }, [loading, authenticated]);
 
+  useEffect(() => {
+    if (loading) return;
+    if (!authenticated) return;
+  
+    async function getGlucoseHigh() {
+      const { data, error } = await supabase
+        .from("glucose_level")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("value", { ascending: false })
+        .limit(1);
+  
+      if (error) {
+        console.error(error);
+        return;
+      }
+  
+      if (data && data.length > 0 && data[0].value) {
+        setGlucoseHigh(data[0].value);
+        console.log(data[0].value);
+      } else {
+        console.error("No data found");
+      }
+    }
+  
+    async function getGlucoseLow() {
+      const { data, error } = await supabase
+        .from("glucose_level")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("value", { ascending: true })
+        .limit(1);
+  
+      if (error) {
+        console.error(error);
+        return;
+      }
+  
+      if (data && data.length > 0 && data[0].value) {
+        setGlucoseLow(data[0].value);
+        console.log(data[0].value);
+      } else {
+        console.error("No data found");
+      }
+    }
+  
+    getGlucoseHigh();
+    getGlucoseLow();
+  }, [loading, authenticated, supabase, user.id]);
+  
   //   Egg shaking animation
   useEffect(() => {
     const shake = () => {
@@ -254,6 +308,12 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        </div>
+        <div className = "bg-blue-500 mt-10 rounded-xl p-3 text-center text-xl font-bold font-mono">
+          Today's Glucose Level High is {glucoseHigh}
+        </div>
+        <div className = "bg-blue-500 mt-8 rounded-xl p-3 text-center text-xl font-bold font-mono">
+          Today's Glucose Level Low is {glucoseLow}
         </div>
       </div>
       {/* <BottomNav /> */}

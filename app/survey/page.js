@@ -44,7 +44,6 @@ export default function Home() {
         break;
       case "age":
         setAge(newValue);
-
         break;
       default:
         break;
@@ -64,7 +63,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="bg-[#D2E4C4] h-screen flex-grow p-4">
+      <div className="bg-[#D2E4C4] h-screen flex-grow p-4 overflow-hidden">
         <Image
           src={`/clipart.jpg`}
           alt="hero"
@@ -78,7 +77,7 @@ export default function Home() {
             <h1 className="overflow-hidden">{questionData.question}</h1>
           )}
           <div className="flex h-[450px] w-[368px]">
-            <div className="grid grid-cols-2 mt-5 overflow-hidden fixed">
+            <div className="grid grid-cols-2 mt-5 overflow-hidden">
               {questionData.answers.map((answer, index) => (
                 <button
                   key={index}
@@ -109,3 +108,52 @@ export default function Home() {
     </div>
   );
 }
+
+
+//   return (
+//     <div>
+//       <div className="bg-[#D2E4C4] h-screen flex-grow p-4 overflow-hidden">
+//         <Image
+//           src={`/clipart.jpg`}
+//           alt="hero"
+//           height={100}
+//           width={2000}
+//           className="rounded-10xl p-5 flex-shrink-0"
+//           draggable={false}
+//         />
+//         <div className="justify-center flex flex-col items-center text-black text-4xl font-semibold text-center h-[550px]">
+//           {questionData.question && (
+//             <h1 className="overflow-hidden">{questionData.question}</h1>
+//           )}
+//           <div className="flex h-[450px] w-[368px]">
+//             <div className="grid grid-cols-2 mt-5 overflow-hidden">
+//               {questionData.answers.map((answer, index) => (
+//                 <button
+//                   key={index}
+//                   onClick={async () => {
+//                     handleButtonClick(questionData.field, answer);
+//                     if (activeQuestion != questions.totalQuestions - 1) {
+//                       setActiveQuestion(activeQuestion + 1);
+//                     }
+//                   }}
+//                   className={`${
+//                     index === 0
+//                       ? "bg-red-500"
+//                       : index === 1
+//                       ? "bg-blue-500"
+//                       : index === 3
+//                       ? "bg-green-500"
+//                       : "bg-yellow-500"
+//                   } text-white p-2 m-1 rounded-lg text-[25px] overflow-hidden items-center justify-center`}
+//                   style={{ width: "180px", height: "200px" }}
+//                 >
+//                   {answer}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
