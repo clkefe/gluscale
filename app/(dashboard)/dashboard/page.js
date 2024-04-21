@@ -164,7 +164,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="w-full h-screen bg-orange-100">
+    <div className="w-full h-screen bg-orange-100 overflow-hidden">
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="w-11/12 sm:max-w-md rounded-md">
           <DialogHeader>
