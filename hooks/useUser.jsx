@@ -113,22 +113,6 @@ export default function useUser() {
     return router.push(data.url);
   };
 
-  const signUpWithEmail = async (email, password) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-      });
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     setAuthenticated(false);
@@ -145,7 +129,6 @@ export default function useUser() {
     loading,
     authenticated,
     signUpWithGoogle,
-    signUpWithEmail,
     signOut,
     glucoseLevel,
     aiFeedback,

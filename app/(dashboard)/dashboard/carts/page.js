@@ -28,10 +28,12 @@ export default function Dashboard() {
   const [dragons, setDragons] = useState(null);
 
   useEffect(() => {
+    if (loading || !authenticated || !user) return;
+
     async function getDragons() {
       const { data, error } = await supabase
         .from("dragon_cart")
-        .select()
+        .select("*")
         .eq("user_id", user.id);
 
       if (error) {
@@ -57,7 +59,7 @@ export default function Dashboard() {
     }
 
     getDragons();
-  }, []);
+  }, [loading.authenticated, user]);
 
   return (
     <div className="bg-orange-100 container py-4 h-screen">
