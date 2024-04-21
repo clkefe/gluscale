@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { createClient } from "../lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { getURL } from "../lib/utils";
 
 export default function useUser() {
   const supabase = createClient();
@@ -15,7 +16,6 @@ export default function useUser() {
 
   const [glucoseLevel, setGlucoseLevel] = useState(null);
   const [aiFeedback, setAiFeedback] = useState(null);
-
 
   useEffect(() => {
     async function getGlucoseLevel() {
@@ -82,7 +82,7 @@ export default function useUser() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/callback`,
+        redirectTo: getURL(),
       },
     });
 

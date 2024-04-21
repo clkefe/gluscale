@@ -36,6 +36,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (loading) return;
     if (!authenticated) return;
+
     async function getDragonId() {
       const { data, error } = await supabase
         .from("dragon_egg")
@@ -52,6 +53,16 @@ export default function Dashboard() {
 
       if (data.length > 0) {
         setCurrentDragonId(data[0].dragon_id);
+      } else {
+        const newDragonId = Math.floor(Math.random() * 2);
+        await supabase.from("dragon_egg").insert([
+          {
+            user_id: user.id,
+            dragon_id: newDragonId,
+          },
+        ]);
+
+        setCurrentDragonId(newDragonId);
       }
     }
 
@@ -259,7 +270,7 @@ export default function Dashboard() {
                 <div className="text-2xl font-mono">Sugar Level</div>
                 <div className="flex flex-row justify-start items-end">
                   <div className="text-6xl font-semibold">
-                    {loading ? <>...</> : glucoseLevel?.toFixed(2)}
+                    {loading ? <>NaN</> : glucoseLevel?.toFixed(2)}
                   </div>
 
                   <div className="text-lg font-light text-muted-foreground ml-1">
@@ -302,7 +313,16 @@ export default function Dashboard() {
 
                 <div className="flex flex-row mt-2">
                   <div className="text-md">
-                    {loading ? <>...</> : aiFeedback}
+                    {loading ? (
+                      <>Loading</>
+                    ) : aiFeedback ? (
+                      aiFeedback
+                    ) : (
+                      <>
+                        I need you to wait a little bit more to get a feedback!
+                        I am still learning about you.
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
