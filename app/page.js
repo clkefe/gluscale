@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 import axios from "axios";
 import { createClient } from "../lib/supabase/client";
+import GoogleLogo from "../public/Google_Logo.png";
+import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
@@ -121,9 +123,21 @@ export default function Home() {
                 </Button>
               </>
             ) : (
-              <Button onClick={() => signUpWithGoogle()}>
-                Sign up with Google
-              </Button>
+                <Button
+                  className="w-96 bg-foreground text-background select-none hover:bg-stone-200"
+                  onClick={() => signUp("google")}
+                >
+                  <Image
+                    src={GoogleLogo}
+                    alt="Google Logo"
+                    width={24}
+                    height={24}
+                    className="mr-2"
+                  />
+                  <div className="text-white">
+                  Continue with Google
+                  </div>
+                </Button>
             )}
           </div>
           <div class="flex items-center justify-center lg:justify-end lg:mt-0 lg:col-span-4 mt-sm">
