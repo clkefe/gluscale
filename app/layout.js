@@ -3,8 +3,6 @@ import "./globals.css";
 
 import { ThemeProvider } from "../components/theme-provider";
 
-import BottomNav from "../components/BottomNav";
-
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Create Next App",
@@ -22,7 +20,6 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           {children}
-          <BottomNav />
         </ThemeProvider>
       </body>
     </html>

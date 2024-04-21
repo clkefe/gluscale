@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import useUser from "../../../hooks/useUser";
+import useUser from "../../../../hooks/useUser";
 import Image from "next/image";
-import { Badge } from "../../../components/ui/badge";
-import { createClient } from "../../../lib/supabase/client";
-import BottomNav from "../../../components/BottomNav";
+import { Badge } from "../../../../components/ui/badge";
+import { createClient } from "../../../../lib/supabase/client";
+import BottomNav from "../../../../components/BottomNav";
 
 const DRAGONS = [
   {
@@ -29,8 +29,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function getDragons() {
-      //TODO: Fetch dragons from the database
-      const { data, error } = await supabase.from("dragon_cart").select();
+      const { data, error } = await supabase
+        .from("dragon_cart")
+        .select()
+        .eq("user_id", user.id);
 
       if (error) {
         console.error(error);
