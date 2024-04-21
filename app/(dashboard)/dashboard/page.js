@@ -32,7 +32,6 @@ export default function Dashboard() {
   const [glucoseLow, setGlucoseLow] = useState(0);
   const [glucoseHigh, setGlucoseHigh] = useState(0);
 
-
   useEffect(() => {
     if (loading) return;
     if (!authenticated) return;
@@ -126,7 +125,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (loading) return;
     if (!authenticated) return;
-  
+
     async function getGlucoseHigh() {
       const filterDate = new Date();
       filterDate.setHours(0, 0, 0, 0);
@@ -138,12 +137,12 @@ export default function Dashboard() {
         .gte("created_at", yesterdayStr)
         .order("value", { ascending: false })
         .limit(1);
-  
+
       if (error) {
         console.error(error);
         return;
       }
-  
+
       if (data && data.length > 0 && data[0].value) {
         setGlucoseHigh(data[0].value);
         console.log(data[0].value);
@@ -151,7 +150,7 @@ export default function Dashboard() {
         console.error("No data found");
       }
     }
-  
+
     async function getGlucoseLow() {
       const filterDate = new Date();
       filterDate.setHours(0, 0, 0, 0);
@@ -164,12 +163,12 @@ export default function Dashboard() {
         .gte("created_at", yesterdayStr)
         .order("value", { ascending: true })
         .limit(1);
-  
+
       if (error) {
         console.error(error);
         return;
       }
-  
+
       if (data && data.length > 0 && data[0].value) {
         setGlucoseLow(data[0].value);
         console.log(data[0].value);
@@ -177,11 +176,11 @@ export default function Dashboard() {
         console.error("No data found");
       }
     }
-  
+
     getGlucoseHigh();
     getGlucoseLow();
   }, [loading, authenticated, supabase, user.id]);
-  
+
   //   Egg shaking animation
   useEffect(() => {
     const shake = () => {
@@ -338,11 +337,19 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className = "bg-blue-500 mt-10 rounded-xl p-3 text-center text-xl font-bold font-mono">
-          Today's Glucose Level High is {glucoseHigh}
-        </div>
-        <div className = "bg-blue-500 mt-8 rounded-xl p-3 text-center text-xl font-bold font-mono">
-          Today's Glucose Level Low is {glucoseLow}
+        <div className="flex flex-row justify-between mt-6">
+          <div className="bg-red-300 rounded-md p-3 text-center text-xl font-mono mr-2">
+            <div>
+              <p className="text-md">Highest Today:</p>
+              {glucoseHigh.toFixed(2)}
+            </div>
+          </div>
+          <div className="bg-blue-300 rounded-md p-3 text-center text-xl font-mono">
+            <div>
+              <p className="text-md">Lowest Today:</p>
+              {glucoseLow.toFixed(2)}
+            </div>
+          </div>
         </div>
       </div>
       {/* <BottomNav /> */}
