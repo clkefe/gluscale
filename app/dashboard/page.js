@@ -46,8 +46,10 @@ export default function Dashboard() {
         setCurrentEggStage(6);
       } else if (currentHours < 20) {
         setCurrentEggStage(7);
-      } else {
+      } else if (currentHours === 20) {
         setCurrentEggStage(8);
+      } else {
+        setCurrentEggStage(1);
       }
     };
 
@@ -72,13 +74,13 @@ export default function Dashboard() {
           <div className="flex justify-center mt-8">
             <div className="flex items-center rounded-md p-4">
               <div className="flex flex-col items-start">
-                <div className="text-2xl text">Sugar Level</div>
+                <div className="text-2xl font-mono">Sugar Level</div>
                 <div className="flex flex-row justify-start items-end">
                   <div className="text-6xl font-semibold">
                     {loading ? <>...</> : glucoseLevel?.toFixed(2)}
                   </div>
 
-                  <div className="text-lg font-light text-muted-foreground">
+                  <div className="text-lg font-light text-muted-foreground ml-1">
                     mg/dL
                   </div>
                 </div>
