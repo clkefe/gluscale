@@ -6,7 +6,7 @@ import {
   IconHome,
   IconUser,
   IconArticle,
-  IconArrowBadgeDown,
+  IconFlame,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,7 @@ const PAGES = [
   },
   {
     href: "/dashboard/carts",
-    icon: <IconArrowBadgeDown stroke={0.8} width={52} height={52} />,
+    icon: <IconFlame stroke={1.2} width={32} height={32} />,
     active: false,
   },
   {
